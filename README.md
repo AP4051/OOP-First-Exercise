@@ -3,25 +3,35 @@
 A hands-on collection of progressive programming exercises to master **Object-Oriented Programming (OOP)** in Java.
 
 This repository covers key object-oriented principles:
-- **Classes & Objects**: State, behavior, and lifecycle.
+- **Classes & Objects**: State, behavior, and object lifecycle.
 - **Encapsulation**: Access modifiers, data integrity, and defensive design.
-- **Inheritance & Polymorphism**: Code reuse, dynamic dispatch, and interface/superclass abstraction.
-- **Object Composition & System Design**: Building multi-class domain models and package architectures.
+- **Inheritance & Polymorphism**: Code reuse, dynamic dispatch, and superclass specialization.
+- **Object Composition & System Design**: Building multi-class domain models and managing object interactions.
 
 ---
 
 ## 📑 Table of Contents
-1. [Exercise 1 : Personal Bank Account System](#-exercise-1-easy-personal-bank-account-system)
-2. [Exercise 2 : Employee & Payroll System](#-exercise-2-medium-employee--payroll-system)
-3. [Exercise 3 : E-Commerce Order & Inventory System](#-exercise-3-hard--project-e-commerce-order--inventory-system)
-4. [Evaluation Rubric & Best Practices](#-evaluation-rubric)
+1. [Exercise 1: Personal Bank Account System](#-exercise-1-personal-bank-account-system)
+2. [Exercise 2: Employee & Payroll System](#-exercise-2-employee--payroll-system)
+3. [Exercise 3: Vehicle Rental Management System](#-exercise-3-vehicle-rental-management-system)
+4. [Git Workflow Guide (Fork, Clone, Commit & Push)](#-git-workflow-guide-fork-clone-commit--push)
 
 ---
 
-## 🟢 Exercise 1 : Personal Bank Account System
+## 📌 Exercise 1: Personal Bank Account System
 
 ### 🎯 Objective
-Learn the fundamentals of class definition, object instantiation, constructor initialization, and apply **strict Encapsulation** to protect internal state.
+Learn how to define a class, instantiate objects, write constructors, and apply **strict Encapsulation** so that an object's internal data cannot be corrupted or directly altered from the outside.
+
+### 📖 The Story
+You are working on the core banking module of a digital bank. In financial applications, security and data integrity are everything: account balances must never be directly modified from outside code, and invalid operations—such as depositing negative amounts or withdrawing more money than available—must be strictly prevented.
+
+### 🛠 What You Need to Build (Your Tasks)
+1. **Create `BankAccount.java`**:
+   - Model an account holding an account number, owner name, and balance.
+   - Enforce that balance changes can **only** happen through validated deposit and withdrawal methods.
+2. **Create `Main.java`**:
+   - Test your class by performing valid and invalid banking operations, verifying that invalid actions are safely rejected.
 
 ### 📁 Suggested Project Structure
 ```text
@@ -31,167 +41,216 @@ exercise-1-bank-account/
     └── Main.java
 ```
 
-### 📋 Problem Statement & Requirements
-You are asked to model a simple bank account with strict security rules around money handling.
+### 📋 Class Specification: `BankAccount`
 
-#### Core Specifications:
-1. **State & Visibility**:
-   - Each account must track an `accountNumber` (String), `ownerName` (String), and `balance` (double).
-   - All fields **must be private**. No external code should be able to alter the balance directly.
-   - The `accountNumber` should be immutable once created (read-only).
+#### Variables:
+- `String accountNumber`: Unique identifier for the account (immutable after creation).
+- `String ownerName`: Full name of the account holder.
+- `double balance`: Current balance of the account.
 
-2. **Initialization**:
-   - Provide a constructor that sets up the account with an account number, owner name, and starting balance.
-   - **Constraint**: If an initial balance less than zero is provided, set the balance to `0.0` and notify the user with an appropriate message.
+#### Methods & Responsibilities:
+- **Constructor**: Initializes account details. Validates that the starting balance cannot be negative (defaults to `0.0` with an error message if invalid).
+- **`getAccountNumber`**: Returns the account number.
+- **`getOwnerName`**: Returns the owner's name.
+- **`setOwnerName`**: Updates the owner's name with non-blank validation.
+- **`getBalance`**: Returns the current balance. *(Do NOT provide a direct `setBalance` method!)*
+- **`deposit`**: Deposits funds into the account, ensuring that only positive amounts are accepted.
+- **`withdraw`**: Withdraws funds from the account, ensuring the requested amount is positive and does not exceed available funds.
+- **`displayAccountInfo`**: Prints the account number, owner name, and current balance in a readable format.
 
-3. **Behavior & Invariants (Encapsulation)**:
-   - Provide standard getter methods.
-   - For `ownerName`, allow updates through a setter only if the provided name is valid (non-null and not blank).
-   - Provide controlled transaction methods instead of a raw `setBalance`:
-     - `deposit(double amount)`: Accepts strictly positive values (`amount > 0`). Rejects zero or negative amounts.
-     - `withdraw(double amount)`: Validates that the amount is positive and does not exceed the current balance. If funds are insufficient, reject the operation and show an error.
-   - `displayAccountInfo()`: Prints a clear summary of the account details and current balance.
+> [!IMPORTANT]
+> **Don't forget to maintain encapsulation!**
 
-### 🧪 Verification & Test Scenario (`Main.java`)
-Write a `main` method that verifies your encapsulation and business rules:
-- Create an account with a starting balance of `$1,000`.
-- Attempt invalid operations (e.g., deposit negative money, withdraw more than the available balance) and verify they are rejected.
-- Perform a valid deposit of `$500` and a valid withdrawal of `$300`.
-- Print the account info to confirm the final balance matches `$1,200`.
+### 🧪 Verification (`Main.java`)
+In `Main.java`, verify your implementation with these exact steps:
+1. Create an account for `"Alice"` with account number `"ACC-101"` and starting balance `$1,000`.
+2. Attempt to deposit a negative amount (e.g. `-$200`) ➔ verify it is rejected with an error.
+3. Deposit `$500` ➔ verify balance becomes `$1,500`.
+4. Attempt to withdraw `$2,000` (exceeding balance) ➔ verify it is rejected with an error.
+5. Withdraw `$300` ➔ verify it succeeds.
+6. Call `displayAccountInfo()` ➔ confirm final balance is `$1,200`.
 
 ---
 
-## 🟡 Exercise 2 : Employee & Payroll System
+## 📌 Exercise 2: Employee & Payroll System
 
 ### 🎯 Objective
-Implement **Inheritance** (`extends`) and **Polymorphism**, leverage `super` for constructor chaining and method reuse, and handle diverse business rules across derived classes while maintaining encapsulation.
+Learn how to use **Inheritance** (`extends`) to share common code across classes, call parent constructors with `super`, override methods to customize behavior for subclasses, and use **Polymorphism** to process different types of objects uniformly.
+
+### 📖 The Story
+A company employs different types of staff: full-time employees who receive a fixed salary along with benefits (performance bonuses and healthcare allowances), and part-time contractors who are paid strictly by the hour. Managing diverse contracts in spreadsheets has led to calculation errors and duplicated effort.
+
+### 🛠 What You Need to Build (Your Tasks)
+1. **Create `Employee.java` (Base Class)**:
+   - Holds shared attributes (ID, name, base salary) and common behavior.
+2. **Create `FullTimeEmployee.java` (Subclass)**:
+   - Inherits from `Employee` and adds salary calculations that include bonuses and healthcare allowances.
+3. **Create `PartTimeEmployee.java` (Subclass)**:
+   - Inherits from `Employee` and computes earnings based on hours logged and an hourly rate.
+4. **Create `Main.java`**:
+   - Store different employee types in a single collection and calculate payroll polymorphically.
 
 ### 📁 Suggested Project Structure
 ```text
 exercise-2-employee-system/
 └── src/
     ├── Employee.java            # Base class
-    ├── FullTimeEmployee.java    # Derived class
-    ├── PartTimeEmployee.java    # Derived class
+    ├── FullTimeEmployee.java    # Subclass
+    ├── PartTimeEmployee.java    # Subclass
     └── Main.java                # Test runner
 ```
 
-### 📋 Problem Statement & Requirements
-A company needs a payroll system capable of managing multiple employment types under a common interface.
+### 📋 Class Specifications
 
 #### 1. Base Class: `Employee`
-- Defines common employee data: `id`, `name`, and `baseSalary` (all `private`).
-- Constructor initializes all base attributes safely.
-- Provides getters and validated setters where appropriate.
-- Defines a method `calculateSalary()` that returns the base salary.
-- Defines `displayInfo()` to print employee identifiers and calculated earnings.
-
-#### 2. Subclasses: Specialization via Inheritance
-- **`FullTimeEmployee`**:
-  - Represents salaried staff with additional benefits (e.g., performance bonus and healthcare allowance).
-  - Uses `super(...)` to initialize base attributes.
-  - Overrides `calculateSalary()` to compute earnings by factoring in base salary plus benefits.
-- **`PartTimeEmployee`**:
-  - Represents contractors paid by the hour (tracks `hoursWorked` and `hourlyRate`).
-  - Uses `super(...)` properly.
-  - Overrides `calculateSalary()` so that compensation is calculated solely from hours logged multiplied by the hourly rate.
-
-> [!IMPORTANT]
-> **Don't forget to maintain encapsulation!**
-### 🧪 Verification & Test Scenario (`Main.java`)
-Demonstrate **Polymorphism**:
-- Create an array or collection of type `Employee` holding at least one general `Employee`, one `FullTimeEmployee`, and one `PartTimeEmployee`.
-- Iterate through the collection in a single loop, invoking `displayInfo()` on each element.
-- Calculate and display the grand total payroll that the company must pay across all employees.
+- **Variables**:
+  - `String id`: Unique employee identifier.
+  - `String name`: Full name of the employee.
+  - `double baseSalary`: Fixed base monthly salary.
+- **Methods & Responsibilities**:
+  - **Constructor**: Initializes `id`, `name`, and validates that base salary is non-negative.
+  - **Getters & Setters**: Controlled access to employee attributes.
+  - **`calculateSalary`**: Calculates and returns the employee's monthly earnings (returns base salary for standard employees).
+  - **`displayInfo`**: Prints employee ID, name, and total calculated earnings.
 
 ---
 
-## 🔴 Exercise 3 : E-Commerce Order & Inventory System
+#### 2. Subclass: `FullTimeEmployee` (extends `Employee`)
+- **Variables**:
+  - `double bonus`: Monthly performance bonus.
+  - `double medicalAllowance`: Monthly healthcare allowance.
+- **Methods & Responsibilities**:
+  - **Constructor**: Chains to the superclass constructor and initializes bonus and medical allowance.
+  - **Getters & Setters**: Controlled access to bonus and allowance fields.
+  - **`calculateSalary`**: Overrides salary calculation to factor in additional benefits (bonus and allowance) on top of the base salary.
+
+---
+
+#### 3. Subclass: `PartTimeEmployee` (extends `Employee`)
+- **Variables**:
+  - `int hoursWorked`: Total hours worked in the pay period.
+  - `double hourlyRate`: Payment rate per hour.
+- **Methods & Responsibilities**:
+  - **Constructor**: Chains to the superclass constructor and sets up hourly details.
+  - **Getters & Setters**: Controlled access to hours worked and hourly rate.
+  - **`calculateSalary`**: Overrides salary calculation to compute compensation based on logged hours and hourly wage rate.
+
+> [!IMPORTANT]
+> **Don't forget to maintain encapsulation!**
+
+### 🧪 Verification (`Main.java`)
+In `Main.java`, demonstrate **Polymorphism**:
+1. Create an array or list of type `Employee` containing:
+   - One standard `Employee` (base salary: `$2,000`).
+   - One `FullTimeEmployee` (base salary: `$3,000`, bonus: `$500`, allowance: `$200`).
+   - One `PartTimeEmployee` (40 hours, `$25`/hour).
+2. Use a single `for` loop to iterate through the array and invoke `displayInfo()` on each employee.
+3. Calculate and print the grand total payroll cost for all employees combined.
+
+---
+
+## 📌 Exercise 3: Vehicle Rental Management System
 
 ### 🎯 Objective
-Design and implement a multi-package, object-oriented system that combines **Inheritance**, **Encapsulation**, **Composition**, and **Transaction Integrity**.
+Design a multi-class system combining **Inheritance**, **Encapsulation**, and **Object Composition**. You will model different types of vehicles and build a central manager class that manages available inventory, processes rentals, and calculates rental costs.
 
-### 📁 Package & Directory Structure
+### 📖 The Story
+A vehicle rental agency needs a software system to manage its rental fleet (cars and motorcycles). Customers rent vehicles for a number of days, and different vehicle types calculate rental pricing differently:
+- **Cars** have a fixed cleaning/insurance fee added to their rental.
+- **Motorcycles** offer a discount if rented for a week (7 days) or longer.
+
+The agency needs a central manager to track which vehicles are currently rented, display available vehicles, process customer rentals, and calculate final receipts upon rental.
+
+### 🛠 What You Need to Build (Your Tasks)
+1. **Create `Vehicle.java` (Base Class)**:
+   - Models a generic vehicle with rental status tracking.
+2. **Create `Car.java` and `Motorcycle.java` (Subclasses)**:
+   - Inherit from `Vehicle` and specialize the rental cost calculation.
+3. **Create `RentalAgency.java` (System Manager)**:
+   - Manages a collection of vehicles (Object Composition), handles renting and returning, and prevents renting already-rented vehicles.
+4. **Create `Main.java`**:
+   - Simulate a full rental and return workflow.
+
+### 📁 Suggested Project Structure
 ```text
-exercise-3-ecommerce-system/
+exercise-3-rental-system/
 └── src/
-    ├── customer/
-    │   └── Customer.java          # Customer profile & digital wallet
-    ├── product/
-    │   ├── Product.java           # Base product definition
-    │   ├── PhysicalProduct.java   # Weight-based shipping logic
-    │   └── DigitalProduct.java    # Discounted/license-based goods
-    ├── order/
-    │   ├── OrderItem.java         # Product reference & quantity
-    │   └── Order.java             # Cart management & checkout logic
-    └── Main.java                  # End-to-end integration test
+    ├── Vehicle.java             # Base vehicle class
+    ├── Car.java                 # Subclass
+    ├── Motorcycle.java          # Subclass
+    ├── RentalAgency.java        # System manager (Fleet management)
+    └── Main.java                # Simulation runner
 ```
 
 ---
 
-### 📋 Architecture & Business Specifications
+### 📋 Class Specifications
 
-#### 1. Product Hierarchy (`product` package)
-- **`Product` (Base Class)**:
-  - Private fields: `id`, `name`, `price`, and `stockQuantity`.
-  - Methods to safely increase and reduce stock. Stock must never fall below zero.
-  - A method `calculateFinalPrice()` that returns the unit price (open for specialization in subclasses).
-- **`PhysicalProduct`**:
-  - Adds physical attributes (e.g., `weightKg`, `shippingRatePerKg`).
-  - Overrides `calculateFinalPrice()`: Price includes base price plus shipping calculated from weight.
-- **`DigitalProduct`**:
-  - Adds digital attributes (e.g., `downloadUrl`, `fileSizeMb`, `discountPercentage`).
-  - Overrides `calculateFinalPrice()`: Applies a percentage discount to the base price without shipping fees.
+#### 1. Base Class: `Vehicle`
+- **Variables**:
+  - `String licensePlate`: Unique license plate (e.g. `"ABC-123"`).
+  - `String model`: Vehicle make and model (e.g. `"Toyota Corolla"`).
+  - `double dailyRate`: Standard rental rate per day.
+  - `boolean isRented`: Flag indicating if the vehicle is currently rented out (defaults to `false`).
+- **Methods & Responsibilities**:
+  - **Constructor**: Initializes license plate, model, and daily rate. Sets `isRented = false`.
+  - **Getters**: Provide getters for all fields.
+  - **`rentVehicle`**: Sets `isRented = true`.
+  - **`returnVehicle`**: Sets `isRented = false`.
+  - **`calculateRentalCost`**: Takes `int days` and returns `dailyRate * days`. (Designed to be overridden in subclasses).
+  - **`displayDetails`**: Prints plate, model, daily rate, and whether it is currently available or rented.
 
-#### 2. Customer & Wallet Management (`customer` package)
-- **`Customer`**:
-  - Tracks customer ID, full name, email, and `walletBalance`.
-  - Ensure the email is formatted reasonably (basic validation).
-  - Encapsulate the wallet: provide `topUpWallet(double amount)` and `deductWallet(double amount)`.
-  - Funds must not be deducted if the balance is insufficient.
+---
 
-#### 3. Order Processing & Transaction Integrity (`order` package)
-- **`OrderItem`**:
-  - Combines a `Product` reference with an ordered `quantity`.
-  - Computes the subtotal for this item (`product.calculateFinalPrice() * quantity`).
-- **`Order`**:
-  - Contains an `orderId`, an associated `Customer`, a list of `OrderItem` objects, and an `isPaid` flag.
-  - `addItem(Product product, int quantity)`: Ensures requested quantity does not exceed current stock before adding to cart.
-  - `calculateTotalOrderCost()`: Computes total across all order items.
-  - `checkout()`: **Must execute atomically**:
-    1. Calculate the total cost of the order.
-    2. Check if the customer has enough funds in their wallet.
-    3. **If funds are sufficient**:
-       - Deduct the total cost from the customer's wallet.
-       - Decrement the stock of each product ordered.
-       - Mark the order as paid.
-       - Print a detailed receipt with item subtotals and final total.
-    4. **If funds are insufficient**:
-       - Reject the checkout with an explicit error message.
-       - **State Safety**: Do NOT deduct any funds, and do NOT decrement any product stock!
+#### 2. Subclass: `Car` (extends `Vehicle`)
+- **Variables**:
+  - `int numberOfSeats`: Number of passenger seats.
+- **Methods & Responsibilities**:
+  - **Constructor**: Calls `super(...)` and initializes `numberOfSeats`.
+  - **Getters & Setters**: Accessor for `numberOfSeats`.
+  - **`calculateRentalCost`**: Overrides rental cost calculation to add a fixed service/insurance fee to the total daily cost.
+  - **`displayDetails`**: Overrides parent method to display car details along with number of seats.
+
+---
+
+#### 3. Subclass: `Motorcycle` (extends `Vehicle`)
+- **Variables**:
+  - `boolean hasHelmetIncluded`: Whether a helmet is provided.
+- **Methods & Responsibilities**:
+  - **Constructor**: Calls `super(...)` and initializes `hasHelmetIncluded`.
+  - **Getters & Setters**: Accessor for `hasHelmetIncluded`.
+  - **`calculateRentalCost`**: Overrides rental cost calculation to apply a promotional discount for long-term rentals (e.g. 7 days or more).
+  - **`displayDetails`**: Overrides parent method to display motorcycle details along with helmet status.
+
+---
+
+#### 4. Manager Class: `RentalAgency` (System Design)
+- **Variables**:
+  - `String agencyName`: Name of the rental agency.
+  - `List<Vehicle> fleet`: Collection of vehicles managed by the agency.
+- **Methods & Responsibilities**:
+  - **Constructor**: Initializes `agencyName` and initializes `fleet` as an empty list (e.g. `new ArrayList<>()`).
+  - **`addVehicle`**: Adds a `Vehicle` to the agency's fleet.
+  - **`displayAvailableVehicles`**: Displays details for all vehicles in the fleet that are currently available for rent.
+  - **`rentVehicle`**: Searches for a vehicle by license plate and rents it if available, calculating the total cost and generating a rental confirmation. If the vehicle is already rented or not found, rejects the request with an error.
+  - **`returnVehicle`**: Searches for a rented vehicle by license plate and processes its return, restoring its availability. Handles cases where the vehicle was not found or was not rented.
 
 > [!IMPORTANT]
 > **Don't forget to maintain encapsulation!**
 ---
 
-### 🧪 Verification & Test Scenario (`Main.java`)
-Simulate a realistic lifecycle test:
-1. Initialize physical products (e.g., Laptop) and digital products (e.g., Online Course).
-2. Create a customer with a limited wallet balance (e.g., `$500`).
-3. Build an order containing items whose total cost exceeds the customer's wallet (e.g., `$1,200`).
-4. Attempt `checkout()`:
-   - Verify that the transaction fails gracefully.
-   - Confirm that product stock and the customer's wallet balance remained unchanged.
-5. Deposit sufficient funds into the customer's wallet.
-6. Re-run `checkout()`:
-   - Verify that checkout succeeds.
-   - Confirm receipt output.
-   - Confirm the wallet was debited and product stock was reduced accordingly.
+### 🧪 Verification (`Main.java`)
+In `Main.java`, simulate the complete agency workflow:
+1. Create a `RentalAgency` named `"City Wheels"`.
+2. Add a `Car` (e.g. `"Toyota Camry"`, rate: `$50`/day, `5` seats) and a `Motorcycle` (e.g. `"Yamaha MT-07"`, rate: `$30`/day, helmet: `true`).
+3. Display all available vehicles.
+4. Rent the car for `3` days ➔ verify that the calculated cost factors in the extra service fee and the car is marked as rented.
+5. Attempt to rent the **same car again** ➔ verify the system rejects it because it is already rented.
+6. Return the car ➔ verify it is successfully returned and appears in the available list again.
 
 ---
 
 > 💡 **Tip for Learners**: Fork this repository, implement your solutions, and write modular, readable code!
-
 
 ---
 
