@@ -11,14 +11,14 @@ This repository covers key object-oriented principles:
 ---
 
 ## 📑 Table of Contents
-1. [Exercise 1 (Easy): Personal Bank Account System](#-exercise-1-easy-personal-bank-account-system)
-2. [Exercise 2 (Medium): Employee & Payroll System](#-exercise-2-medium-employee--payroll-system)
-3. [Exercise 3 (Hard / Project): E-Commerce Order & Inventory System](#-exercise-3-hard--project-e-commerce-order--inventory-system)
+1. [Exercise 1 : Personal Bank Account System](#-exercise-1-easy-personal-bank-account-system)
+2. [Exercise 2 : Employee & Payroll System](#-exercise-2-medium-employee--payroll-system)
+3. [Exercise 3 : E-Commerce Order & Inventory System](#-exercise-3-hard--project-e-commerce-order--inventory-system)
 4. [Evaluation Rubric & Best Practices](#-evaluation-rubric)
 
 ---
 
-## 🟢 Exercise 1 (Easy): Personal Bank Account System
+## 🟢 Exercise 1 : Personal Bank Account System
 
 ### 🎯 Objective
 Learn the fundamentals of class definition, object instantiation, constructor initialization, and apply **strict Encapsulation** to protect internal state.
@@ -61,7 +61,7 @@ Write a `main` method that verifies your encapsulation and business rules:
 
 ---
 
-## 🟡 Exercise 2 (Medium): Employee & Payroll System
+## 🟡 Exercise 2 : Employee & Payroll System
 
 ### 🎯 Objective
 Implement **Inheritance** (`extends`) and **Polymorphism**, leverage `super` for constructor chaining and method reuse, and handle diverse business rules across derived classes while maintaining encapsulation.
@@ -106,7 +106,7 @@ Demonstrate **Polymorphism**:
 
 ---
 
-## 🔴 Exercise 3 (Hard / Project): E-Commerce Order & Inventory System
+## 🔴 Exercise 3 : E-Commerce Order & Inventory System
 
 ### 🎯 Objective
 Design and implement a multi-package, object-oriented system that combines **Inheritance**, **Encapsulation**, **Composition**, and **Transaction Integrity**.
