@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/Tamrin--2.iml" filepath="$PROJECT_DIR$/.idea/Tamrin--2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/exercise-2-employee-system/exercise-1-bank-account.iml" filepath="$PROJECT_DIR$/exercise-2-employee-system/exercise-1-bank-account.iml" />
+      <module fileurl="file://$PROJECT_DIR$/exercise1-bank-account/exercise2-employee-system.iml" filepath="$PROJECT_DIR$/exercise1-bank-account/exercise2-employee-system.iml" />
+      <module fileurl="file://$PROJECT_DIR$/exercise3-rental-system/exercise3-rental-system.iml" filepath="$PROJECT_DIR$/exercise3-rental-system/exercise3-rental-system.iml" />
+    </modules>
+  </component>
+</project>
